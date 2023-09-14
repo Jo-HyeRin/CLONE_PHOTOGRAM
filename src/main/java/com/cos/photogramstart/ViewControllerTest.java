@@ -3,7 +3,8 @@ package com.cos.photogramstart;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+// 화면을 보기 위해 테스트용으로 사용했던 것이므로 삭제한다.
+// @Controller   
 public class ViewControllerTest {
 
 	@GetMapping("/auth/signup")
