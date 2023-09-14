@@ -1,14 +1,22 @@
 package com.cos.photogramstart.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity // 3. 해당 파일로 시큐리티를 활성화
 @Configuration // 2. IOC 등록해서 메모리에 띄워야 함
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	// 1. 시큐리티 설정 파일이 되려면 WebSecurityConfigurerAdapter 를 상속해야 함
+	
+	// 비밀번호 암호화
+	@Bean // SecurityConfig가 IoC에 등록될 때 @Bean을 읽어서 return 해서 IoC가 들고 있다.
+	public BCryptPasswordEncoder encode() {
+		return new BCryptPasswordEncoder();
+	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
