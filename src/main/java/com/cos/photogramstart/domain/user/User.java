@@ -26,14 +26,18 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 번호 자동 증가 전략이 데이터베이스를 따라간다.
 	private int id;	
 	
+	// 데이터베이스에 대한 어노테이션
 	// 스키마 변경 시 그냥 저장하면 반영되지 않는다.
 	// 다시 create로 실행해야 반영됨.
 	@Column(length=20, unique=true)
 	private String username;	
+	@Column(nullable=false)
 	private String password;
+	@Column(nullable=false)
 	private String name;
 	private String website; // 웹사이트
 	private String bio; // 자기소개
+	@Column(nullable=false)
 	private String email;
 	private String phone;
 	private String gender; // 성별

@@ -1,12 +1,21 @@
 package com.cos.photogramstart.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.auth.SignupDto;
 
@@ -48,20 +57,43 @@ public class AuthController {
 	
 	// 회원가입
 	@PostMapping("/auth/signup")
-	public String signup(SignupDto signupDto) { 
-		// 스프링은 기본적으로 key-value(x-www-form-urlencoded)형식으로 데이터를 받음
-		// log.info(signupDto.toString());
+	public String signup(@Valid SignupDto signupDto, BindingResult bindingResult) { 
+		// validation check - 아래처럼 하면 모든 유효성 검사 코드를 작성해야 하는 번거로움이 있다.
+//		if(signupDto.getUsername().length() > 20) {
+//		System.out.println("유저네임 길이 초과했음");
+//	}
 		
-		// User 타입으로 데이터 받음
-		User user = signupDto.toEntity();
-		// log.info(user.toString());
+		// spring-boot-starter-validation dependency 추가 후 @valid 이용
+		// DTO에 validation에 대한 어노테이션 적용 해두면 validation 체크!
 		
-		// User 테이블에 signupDto 값을 저장
-		User userEntity = authService.회원가입(user);
-		//System.out.println(userEntity);
+		// validation check 오류 발생 시 BindingResult 클래스를 이용해 발생한 오류를 수집, 처리할 수 있다.		
 		
-		// 회원가입 후 로그인 페이지로 이동
-		return "auth/signin";
+		if(bindingResult.hasErrors()) { // validation check 오류 - exception 발생시키기
+			Map<String, String> errorMap = new HashMap<>();			
+			for(FieldError error : bindingResult.getFieldErrors()) {
+				errorMap.put(error.getField(), error.getDefaultMessage());
+//				System.out.println("==========================");
+//				System.out.println(error.getDefaultMessage());
+//				System.out.println("==========================");
+			}			
+			throw new CustomValidationException("유효성 검사 실패함", errorMap);
+		} else { // validation check 정상
+			// 스프링은 기본적으로 key-value(x-www-form-urlencoded)형식으로 데이터를 받음
+			// log.info(signupDto.toString());
+			
+			// User 타입으로 데이터 받음
+			User user = signupDto.toEntity();
+			// log.info(user.toString());
+			
+			// User 테이블에 signupDto 값을 저장
+			User userEntity = authService.회원가입(user);
+			//System.out.println(userEntity);
+			
+			// 회원가입 후 로그인 페이지로 이동
+			return "auth/signin";
+		}
+		
+		
 	}
 	
 }
