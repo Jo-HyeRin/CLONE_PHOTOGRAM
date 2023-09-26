@@ -22,12 +22,13 @@
 			<!--프로필셋팅 아이디영역end-->
 
 			<!--프로필 수정-->
-			<form id="profileUpdate"">
+			<!-- form 태그의 버튼이 submit이어야 유효성검사(required) 작동, form태그의 액션은 js에서 막기 -->
+			<form id="profileUpdate" onsubmit="update(${principal.user.id}, event)">
 				<div class="content-item__02">
 					<div class="item__title">이름</div>
 					<div class="item__input">
 						<input type="text" name="name" placeholder="이름"
-							value="${principal.user.name}"/>
+							value="${principal.user.name}" required/>
 					</div>
 				</div>
 				<div class="content-item__03">
@@ -40,7 +41,7 @@
 				<div class="content-item__04">
 					<div class="item__title">패스워드</div>
 					<div class="item__input">
-						<input type="password" name="password" placeholder="패스워드"  />
+						<input type="password" name="password" placeholder="패스워드"  required/>
 					</div>
 				</div>
 				<div class="content-item__05">
@@ -73,7 +74,7 @@
 				<div class="content-item__09">
 					<div class="item__title">전화번호</div>
 					<div class="item__input">
-						<input type="text" name="tel" placeholder="전화번호"
+						<input type="text" name="phone" placeholder="전화번호"
 							value="${principal.user.phone}" />
 					</div>
 				</div>
@@ -88,7 +89,7 @@
 				<div class="content-item__11">
 					<div class="item__title"></div>
 					<div class="item__input">
-						<button>제출</button>
+						<button>제출</button><!-- form태그에 onsubmit으로 버튼 타입 설정함 -->
 					</div>
 				</div>
 				<!--제출버튼end-->
