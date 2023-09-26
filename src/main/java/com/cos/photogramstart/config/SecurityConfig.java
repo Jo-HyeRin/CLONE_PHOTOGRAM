@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		// 인증이 안 되면 loginPage 주소로 이동 
 		// 이동한 loginPage에서 정상 로그인 시 defaultSuccessUrl로 이동
 		http.authorizeRequests()
-		.antMatchers("/", "/user/**", "/image/**", "/subscribe/**", "/comment/**").authenticated()
+		.antMatchers("/", "/user/**", "/image/**", "/subscribe/**", "/comment/**", "/api/**").authenticated()
 		.anyRequest().permitAll()
 		.and()
 		.formLogin()
