@@ -18,6 +18,7 @@ import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.service.UserService;
 import com.cos.photogramstart.web.dto.CMRespDto;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,7 +47,9 @@ public class UserApiController {
 			User userEntity = userService.회원수정(id, userUpdateDto.toEntity());
 			// 세션 업데이트
 			principalDetails.setUser(userEntity); 
-			return new CMRespDto<>(1, "회원수정 완료", userEntity);
+			return new CMRespDto<>(1, "회원수정 완료", userEntity); 
+			// 응답 시 userEntity의 모든 getter 함수가 호출되고 JSON으로 파싱하여 응답한다. images 호출로 인해 무한참조!
+			// User 응담 시 Image 내부의 user getter를 호출하지 않도록 막는다 -> User.java에 @JsonIgnoreProperties 이용
 		}
 		
 	}

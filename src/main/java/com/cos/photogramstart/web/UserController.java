@@ -29,7 +29,7 @@ public class UserController {
 	@GetMapping("/user/{id}/update")
 	public String update(@PathVariable int id, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 		// 세션에 접근하는 방법 : @AuthenticationPrincipal 을 통해 Authentication 객체에 바로 접근할 수 있다.
-		System.out.println("세션 정보 : " + principalDetails.getUser());
+//		System.out.println("세션 정보 : " + principalDetails.getUser()); // 오류 발생
 		
 		// 세션 정보를 직접 찾는 방법
 		// 유저 정보는 세션 영역 내 SecurityContextHolder에 PrincipalDetails를 담은 Authentication이라는 객체로 들어간다
