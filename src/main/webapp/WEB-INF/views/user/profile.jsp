@@ -26,10 +26,28 @@
 		<!--유저정보 및 사진등록 구독하기-->
 		<div class="profile-right">
 			<div class="name-group">
-				<h2>${user.name}</h2>
-
-				<button class="cta" onclick="location.href='/image/upload'">사진등록</button>
-				<button class="cta" onclick="toggleSubscribe(this)">구독하기</button>
+				<h2>${dto.user.name}</h2>
+								
+				<!-- 아래처럼 구현할 수도 있지만, 뷰 페이지에 자바 코드를 섞거나 연산을 하는 것은 추천하지 않는다. -->
+<%-- 				<c:choose> --%>
+<%-- 					<c:when test="${principal.user.id == user.id}"> --%>
+<!-- 						<button class="cta" onclick="location.href='/image/upload'">사진등록</button> -->
+<%-- 					</c:when> --%>
+<%-- 					<c:otherwise> --%>
+<!-- 						<button class="cta" onclick="toggleSubscribe(this)">구독하기</button> -->
+<%-- 					</c:otherwise> --%>
+<%-- 				</c:choose> --%>
+				
+				<!-- 페이지 주인 여부를 데이터로 받아와서 아래처럼 구현해보자. -->
+				<c:choose>
+					<c:when test="${dto.pageOwnerState}">
+						<button class="cta" onclick="location.href='/image/upload'">사진등록</button>
+					</c:when>
+					<c:otherwise>
+						<button class="cta" onclick="toggleSubscribe(this)">구독하기</button>
+					</c:otherwise>
+				</c:choose>
+				
 				<button class="modi" onclick="popup('.modal-info')">
 					<i class="fas fa-cog"></i>
 				</button>
@@ -37,15 +55,15 @@
 
 			<div class="subscribe">
 				<ul>
-					<li><a href=""> 게시물<span>3</span>
+					<li><a href=""> 게시물<span>${dto.imageCount}</span>
 					</a></li>
 					<li><a href="javascript:subscribeInfoModalOpen();"> 구독정보<span>2</span>
 					</a></li>
 				</ul>
 			</div>
 			<div class="state">
-				<h4>${user.bio}</h4>
-				<h4>${user.website}</h4>
+				<h4>${dto.user.bio}</h4>
+				<h4>${dto.user.website}</h4>
 			</div>
 		</div>
 		<!--유저정보 및 사진등록 구독하기-->
@@ -64,7 +82,7 @@
 				<!--아이템들-->		
 				<!-- JSTL EL표현식 에서 변수명을 적으면 get함수가 자동 호출된다.(LAZY일 경우 get 호출 중요!) -->	
 				<!-- /upload/를 WebMvcConfig가 낚아채서 파일 경로 설정해준다. -->	
-				<c:forEach var="image" items="${user.images}"> 
+				<c:forEach var="image" items="${dto.user.images}"> 
 					<div class="img-box">
 						<a href=""> <img src="/upload/${image.postImageUrl}"/>
 						</a>

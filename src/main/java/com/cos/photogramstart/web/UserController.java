@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.service.UserService;
+import com.cos.photogramstart.web.dto.user.UserProfileDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,11 +18,11 @@ public class UserController {
 	
 	private final UserService userService;
 
-	@GetMapping("/user/{id}")
-	public String profile(@PathVariable int id, Model model) {
+	@GetMapping("/user/{pageUserId}")
+	public String profile(@PathVariable int pageUserId, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		// 프로필 페이지로 이동 시 모델에 유저 정보, 이미지 정보 등을 담아서 가져간다.
-		User userEntity = userService.회원프로필(id);
-		model.addAttribute("user", userEntity);
+		UserProfileDto dto = userService.회원프로필(pageUserId, principalDetails.getUser().getId());
+		model.addAttribute("dto", dto);
 		return "user/profile";
 	}
 	
