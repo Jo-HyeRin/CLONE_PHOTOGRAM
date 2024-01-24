@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.image.Image;
@@ -26,6 +27,7 @@ public class ImageService {
 	@Value("${file.path}")
 	private String uploadFolder; 
 	
+	@Transactional // 
 	public void 사진업로드(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
 		// 사용자가 업로드하는 파일의 파일명.확장자 가 중복될 수 있으므로, 구분하기 위해 UUID를 이용해보자.
 		// UUID(Universally Unique IDentifier): 네트워크 상에서 고유성이 보장되는 id룰 만들기 위한 표준 규약.

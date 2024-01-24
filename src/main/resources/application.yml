@@ -19,7 +19,7 @@ spring:
     password: 1234
     
   jpa:
-    open-in-view: true
+    open-in-view: true # 원래 service 후 종료되는 세션을 view 단까지 유지하겠다.
     hibernate:
       ddl-auto: update #create update
       naming:

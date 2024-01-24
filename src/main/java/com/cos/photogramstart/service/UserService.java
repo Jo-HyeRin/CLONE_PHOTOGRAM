@@ -19,6 +19,9 @@ public class UserService {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	// 프로필 페이지 회원 정보 가져오기
+	// 서비스가 종료되는 시점에 영속성 컨텍스트는 변경된 오브젝트를 감지하고 DB로 Flush 한다.(=더티체킹)
+	// 조회 시 트랜잭션 태울 때 readOnly = true 걸어주면 변경 감지를 하지 않게 되므로 일을 덜 하게 된다.
+	@Transactional(readOnly = true) 
 	public User 회원프로필(int userId) {
 		// SELECT * FROM image WHERE userId =:userId;
 		User userEntity = userRepository.findById(userId).orElseThrow(()->{
