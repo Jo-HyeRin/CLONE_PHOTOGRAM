@@ -1,13 +1,18 @@
 package com.cos.photogramstart.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+
+import com.cos.photogramstart.domain.image.Image;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,7 +47,15 @@ public class User {
 	private String phone;
 	private String gender; // 성별
 	private String profileImageUrl; // 사진
-	private String role; // 권한	
+	private String role; // 권한		
+	
+	// OneToMany: 한 명의 유저는 여러 이미지를 만들 수 있음, mappedBy: 나는 연관관계의 주인이 아니다. 주인은 Image의 user야. 그러니 테이블에 컬럼 만들지 마.
+	// User를 Select할 때 해당 User id로 등록된 image들을 다 가져와
+	// LAZY: User를 Select할 때 해당 User id로 등록된 image들을 가져오지마 대신 getImages()함수의 image들이 호출될 때 가져와.
+	// EAGER = User를 Select할 때 해당 User id로 등록된 image들을 전부 Join 해서 가져와.
+	@OneToMany(mappedBy="user", fetch = FetchType.LAZY) 
+	private List<Image> images; // 양방향 매핑
+	
 	private LocalDateTime createDate;
 	
 	@PrePersist // DB에 INSERT 되기 직전에 실행

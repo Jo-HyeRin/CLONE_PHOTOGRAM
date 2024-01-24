@@ -48,6 +48,14 @@ public class ImageService {
 		Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser()); // 생성한 파일 이름, 업도르 유저를 보내준다.
 		Image imageEntity = imageRepository.save(image);		
 		// System.out.println(imageEntity);
+		// 위의 주석을 풀면 무한 참조 에러가 발생한다. 
+		// JPA에서 imageEntity(=imageEntity.toString()) 을 출력하면 아래의 user 부분 때문에 무한 참조 발생. 주의하도록 하자.
+		// 아래: Image.java 에서 generate toString 한 부분.
+//		@Override
+//		public String toString() {
+//			return "Image [id=" + id + ", caption=" + caption + ", postImageUrl=" + postImageUrl + ", user=" + user
+//					+ ", createDate=" + createDate + "]";
+//		}
 		
 		// 업로드 폴더를 프로젝트 외부에 두는 이유
 		// 프로젝트 내 .java 파일은 1.서버 실행 시 2.컴파일 되어 3.target 폴더에 .class 형태로 들어가고 4. target 폴더 내부의 파일들을 실행하게 된다.
