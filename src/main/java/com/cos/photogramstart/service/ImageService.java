@@ -1,0 +1,55 @@
+package com.cos.photogramstart.service;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.domain.image.ImageRepository;
+import com.cos.photogramstart.web.dto.image.ImageUploadDto;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class ImageService {
+	
+	private final ImageRepository imageRepository;
+	
+	// 여러 곳에서 사용되는 경우, 
+	// yml 파일에 file: path: 로 만들어 두고 해당 값을 가져와서 사용하는 것이 실수도 줄이고 효율적이다.
+	@Value("${file.path}")
+	private String uploadFolder; 
+	
+	public void 사진업로드(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
+		// 사용자가 업로드하는 파일의 파일명.확장자 가 중복될 수 있으므로, 구분하기 위해 UUID를 이용해보자.
+		// UUID(Universally Unique IDentifier): 네트워크 상에서 고유성이 보장되는 id룰 만들기 위한 표준 규약.
+		// 굉장히 낮은 확률로 UUID도 중복될 수가 있으니, UUID + 파일명 형태로 파일명을 생성하도록 한다.		
+		UUID uuid = UUID.randomUUID(); 
+		String imageFileName = uuid + "_" + imageUploadDto.getFile().getOriginalFilename(); // 실제 파일의 '파일명.확장자' 가져오기
+		// System.out.println("이미지 파일 이름: "+imageFileName);
+		
+		// 실제 파일을 저장할 파일 경로 설정(yml에 설정한 폴더 경로 + 파일명)
+		Path imageFilePath = Paths.get(uploadFolder+imageFileName);
+		
+		// 통신, I/O 작업에는 예외가 발생할 수 있다. 런타임시에만 발생하는 에러이므로 try-catch 사용해서 잡아준다.
+		try {
+			Files.write(imageFilePath, imageUploadDto.getFile().getBytes()); // 파일 업로드
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// 업로드 폴더를 프로젝트 외부에 두는 이유
+		// 프로젝트 내 .java 파일은 1.서버 실행 시 2.컴파일 되어 3.target 폴더에 .class 형태로 들어가고 그것들을 4.실행하게 된다.
+		// 서버 실행 시 정적인 일반 파일들(ex.img)도 target 폴더 내 들어가게 되는데 이를 deploy한다고 한다.
+		// 업로드 폴더가 프로젝트 내부에 있다면
+		// 사진업로드 시 deploy 시간 차 때문에 파일이 타겟 폴더로 들어가기 전에 다음 작업이 실행될 수 있다.
+		// (deploy 시간 보다 프로필 페이지로 이동하는 시간이 빠르다.)
+		
+		
+	}
+}

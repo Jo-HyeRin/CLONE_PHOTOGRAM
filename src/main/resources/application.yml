@@ -28,13 +28,14 @@ spring:
       
   servlet:
     multipart:
-      enabled: true
-      max-file-size: 2MB
+      enabled: true # 파일을 멀티파트 타입으로 받겠다
+      max-file-size: 2MB # 파일 최대 사이즈 제한 설정
 
   security:
     user:
       name: test
       password: 1234   
-
-#file:
-#  path: C:/workspace/upload/
+      
+# yml에서 내가 직접 커스텀 키 생성하고 사용할 수 있다.
+file:
+  path: C:/workspace/springbootwork/upload/
