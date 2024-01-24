@@ -24,8 +24,12 @@ public class ControllerExceptionHandler {
 	
 	// 자바스크립트 응답 - alert, history.back 이용
 	@ExceptionHandler(CustomValidationException.class)
-	public String validationException(CustomValidationException e) {		
-		return Script.back(e.getErrorMap().toString());
+	public String validationException(CustomValidationException e) {			
+		if(e.getErrorMap() == null) {
+			return Script.back(e.getMessage());
+		} else {
+			return Script.back(e.getErrorMap().toString());
+		}
 	}
 	
 	// 데이터 응답

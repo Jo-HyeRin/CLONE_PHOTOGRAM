@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.image.ImageRepository;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
 
@@ -42,6 +43,11 @@ public class ImageService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		// image 테이블에 저장
+		Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser()); // 생성한 파일 이름, 업도르 유저를 보내준다.
+		Image imageEntity = imageRepository.save(image);		
+		// System.out.println(imageEntity);
 		
 		// 업로드 폴더를 프로젝트 외부에 두는 이유
 		// 프로젝트 내 .java 파일은 1.서버 실행 시 2.컴파일 되어 3.target 폴더에 .class 형태로 들어가고 4. target 폴더 내부의 파일들을 실행하게 된다.
