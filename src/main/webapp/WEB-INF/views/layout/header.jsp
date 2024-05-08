@@ -48,7 +48,7 @@
 					<li class="navi-item"><a href="/image/popular">
 							<i class="far fa-compass"></i>
 						</a></li>
-					<li class="navi-item"><a href="/user/1">
+					<li class="navi-item"><a href="/user/${principal.user.id}"><!-- 로그인 유저의 프로필로 가도록 아이디 설정 -->
 							<i class="far fa-user"></i>
 						</a></li>
 				</ul>

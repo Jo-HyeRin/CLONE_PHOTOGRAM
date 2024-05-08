@@ -14,5 +14,7 @@ import lombok.NoArgsConstructor;
 public class UserProfileDto {
 	private boolean pageOwnerState; // 페이지 주인 여부
 	private int imageCount; // 게시물(이미지) 수
+	private boolean subscribeState; // 구독 상태
+	private int subscribeCount; // 구독 수
 	private User user;
 }

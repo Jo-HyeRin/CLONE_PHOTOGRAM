@@ -44,10 +44,20 @@
 						<button class="cta" onclick="location.href='/image/upload'">사진등록</button>
 					</c:when>
 					<c:otherwise>
-						<button class="cta" onclick="toggleSubscribe(this)">구독하기</button>
+					
+						<!-- 구독하기&구독취소 -->
+						<c:choose>
+							<c:when test="${dto.subscribeState}">
+								<button class="cta blue" onclick="toggleSubscribe(${dto.user.id}, this)">구독취소</button>
+							</c:when>
+							<c:otherwise>
+								<button class="cta" onclick="toggleSubscribe(${dto.user.id}, this)">구독하기</button>
+							</c:otherwise>							
+						</c:choose>	
+						<!-- // 구독하기&구독취소 -->	
+										
 					</c:otherwise>
-				</c:choose>
-				
+				</c:choose>				
 				<button class="modi" onclick="popup('.modal-info')">
 					<i class="fas fa-cog"></i>
 				</button>
@@ -55,10 +65,8 @@
 
 			<div class="subscribe">
 				<ul>
-					<li><a href=""> 게시물<span>${dto.imageCount}</span>
-					</a></li>
-					<li><a href="javascript:subscribeInfoModalOpen();"> 구독정보<span>2</span>
-					</a></li>
+					<li><a href=""> 게시물<span>${dto.imageCount}</span></a></li>
+					<li><a href="javascript:subscribeInfoModalOpen(${dto.user.id});"> 구독정보<span>${dto.subscribeCount}</span></a></li><!-- 클릭 시 js 파일의 모달 오픈 함수 호출 -->
 				</ul>
 			</div>
 			<div class="state">
@@ -119,6 +127,9 @@
 
 <!--프로필사진 바꾸기 모달end-->
 
+
+
+<!-- 구독정보 모달 -->
 <div class="modal-subscribe">
 	<div class="subscribe">
 		<div class="subscribe-header">
@@ -127,37 +138,14 @@
 				<i class="fas fa-times"></i>
 			</button>
 		</div>
-
+		
 		<div class="subscribe-list" id="subscribeModalList">
-
-			<div class="subscribe__item" id="subscribeModalItem-1">
-				<div class="subscribe__img">
-					<img src="#" onerror="this.src='/images/person.jpeg'" />
-				</div>
-				<div class="subscribe__text">
-					<h2>love</h2>
-				</div>
-				<div class="subscribe__btn">
-					<button class="cta blue" onclick="toggleSubscribeModal(this)">구독취소</button>
-				</div>
-			</div>
-
-
-			<div class="subscribe__item" id="subscribeModalItem-2">
-				<div class="subscribe__img">
-					<img src="#" onerror="this.src='/images/person.jpeg'" />
-				</div>
-				<div class="subscribe__text">
-					<h2>ssar</h2>
-				</div>
-				<div class="subscribe__btn">
-					<button class="cta blue" onclick="toggleSubscribeModal(this)">구독취소</button>
-				</div>
-			</div>
+			<!-- 페이지 구독자 리스트 profile.js 에서 추가됨! -->
 		</div>
 	</div>
 
 </div>
+<!-- // 구독정보 모달 -->
 
 
 <script src="/js/profile.js"></script>
