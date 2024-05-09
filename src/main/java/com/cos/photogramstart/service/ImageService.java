@@ -3,7 +3,6 @@ package com.cos.photogramstart.service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +32,19 @@ public class ImageService {
 	@Transactional(readOnly=true) // readOnly=true : 영속성 컨텍스트 변경 감지를 해서 더티체킹, flush(반영)을 안 하게 함.
 	public Page<Image> 이미지스토리(int principalId, Pageable pageable){
 		Page<Image> images = imageRepository.mStory(principalId, pageable);
+		
+		// images에 좋아요 상태 담기
+		images.forEach((image) -> {
+			
+			// 좋아요 수 담기
+			image.setLikeCount(image.getLikes().size());
+			
+			image.getLikes().forEach((like) -> {
+				if(like.getUser().getId() == principalId) { // 해당 이미지에 좋아요 한 사람들 리스트 중 로그인 유저가 좋아요를 했는 지 비교
+					image.setLikeState(true);
+				}
+			});
+		});
 		return images;
 	}
 	
