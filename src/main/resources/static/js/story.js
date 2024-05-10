@@ -18,7 +18,6 @@ function storyLoad() {
 		url: `/api/image?page=${page}`,
 		dataType: "json"
 	}).done(res => {
-//		console.log(res);
 		res.data.content.forEach((image)=>{
 			let storyItem = getStoryItem(image);
 			$("#storyList").append(storyItem);
@@ -81,14 +80,10 @@ function getStoryItem(image) {
 				`;
 			}
 			
-				
-				
 			item += `	
 			</div>
 			`;
-		});
-		
-			
+		});		
 		
 	item += `
 		</div>
@@ -97,7 +92,6 @@ function getStoryItem(image) {
 			<button type="button" onClick="addComment(${image.id})">게시</button>
 		</div>
 		<!-- // 댓글 -->
-
 	</div>
 </div>`;
 	return item;
@@ -106,9 +100,9 @@ function getStoryItem(image) {
 // (2) 스토리 스크롤 페이징하기
 $(window).scroll(() => {
 	// 사용자마다 화면의 크기가 다르다. 스크롤 하면 스크롤탑은 변해도 문서의 높이와 윈도우 높이는 변하지 않는다.	
-//	console.log("윈도우 scrolllTop", $(window).scrollTop());
-//	console.log("문서의 높이", $(document).height());
-//	console.log("윈도우 높이", $(window).height());
+	//	console.log("윈도우 scrolllTop", $(window).scrollTop());
+	//	console.log("문서의 높이", $(document).height());
+	//	console.log("윈도우 높이", $(window).height());
 
 	// 맨 밑으로 이동했을 경우 : "스크롤탑 = 문서의 높이 - 윈도우 높이" 가 된다.
 	let checkNum = 	$(window).scrollTop() - ($(document).height() - $(window).height());
@@ -199,7 +193,7 @@ function addComment(imageId) {
 		`;
 		commentList.prepend(content);
 	}).fail(error => {
-		console.log("오류", error);
+		alert(error.responseJSON.data.content);
 	});
 
 	commentInput.val(""); // 인풋 필드를 비워준다.
