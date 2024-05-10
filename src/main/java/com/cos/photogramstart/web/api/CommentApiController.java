@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-public class CommentApiConrtoller {
+public class CommentApiController {
 	
 	private final CommentService commentService;
 	
@@ -36,13 +36,15 @@ public class CommentApiConrtoller {
 		// CommentDto는 키 밸류 형태의 데이터만 받기 때문에 JSON 파라미터를 받기 위해서는 @RequestBody 어노테이션을 붙여야 한다.
 		// @Valid 사용 시 바로 뒤에 BindingResult를 사용해야 유효성 검사가 적용됨.
 		
-		if(bindingResult.hasErrors()) { // 유효성 검사 실패 시
-			Map<String, String> errorMap = new HashMap<>();			
-			for(FieldError error : bindingResult.getFieldErrors()) {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-			}			
-			throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
-		}
+		
+		// AOP 처리했기 때문에 필요하지 않음.
+//		if(bindingResult.hasErrors()) { // 유효성 검사 실패 시
+//			Map<String, String> errorMap = new HashMap<>();			
+//			for(FieldError error : bindingResult.getFieldErrors()) {
+//				errorMap.put(error.getField(), error.getDefaultMessage());
+//			}			
+//			throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
+//		}
 		
 		Comment comment = commentService.댓글쓰기(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
 		return new ResponseEntity<>(new CMRespDto<>(1, "댓글쓰기 성공", comment), HttpStatus.CREATED);

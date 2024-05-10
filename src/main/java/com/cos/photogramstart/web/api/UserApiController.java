@@ -57,14 +57,15 @@ public class UserApiController {
 			BindingResult bindingResult, // 꼭 @Valid 다음 파라미터에 적어야 함
 			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
+		// AOP 처리했기 때문에 필요하지 않음.
 		// 유효성 검사 정상 시 회원수정 진행
-		if(bindingResult.hasErrors()) {
-			Map<String, String> errorMap = new HashMap<>();			
-			for(FieldError error : bindingResult.getFieldErrors()) {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-			}			
-			throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
-		} else {
+//		if(bindingResult.hasErrors()) {
+//			Map<String, String> errorMap = new HashMap<>();			
+//			for(FieldError error : bindingResult.getFieldErrors()) {
+//				errorMap.put(error.getField(), error.getDefaultMessage());
+//			}			
+//			throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
+//		} else {
 			// 회원수정
 			User userEntity = userService.회원수정(id, userUpdateDto.toEntity());
 			// 세션 업데이트
@@ -72,7 +73,7 @@ public class UserApiController {
 			return new CMRespDto<>(1, "회원수정 완료", userEntity); 
 			// 응답 시 userEntity의 모든 getter 함수가 호출되고 JSON으로 파싱하여 응답한다. images 호출로 인해 무한참조!
 			// User 응담 시 Image 내부의 user getter를 호출하지 않도록 막는다 -> User.java에 @JsonIgnoreProperties 이용
-		}
+//		}
 		
 	}
 }

@@ -68,16 +68,17 @@ public class AuthController {
 		
 		// validation check 오류 발생 시 BindingResult 클래스를 이용해 발생한 오류를 수집, 처리할 수 있다.		
 		
-		if(bindingResult.hasErrors()) { // validation check 오류 - exception 발생시키기
-			Map<String, String> errorMap = new HashMap<>();			
-			for(FieldError error : bindingResult.getFieldErrors()) {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-//				System.out.println("==========================");
-//				System.out.println(error.getDefaultMessage());
-//				System.out.println("==========================");
-			}			
-			throw new CustomValidationException("유효성 검사 실패함", errorMap);
-		} else { // validation check 정상
+		// AOP 처리 후 주석
+//		if(bindingResult.hasErrors()) { // validation check 오류 - exception 발생시키기
+//			Map<String, String> errorMap = new HashMap<>();			
+//			for(FieldError error : bindingResult.getFieldErrors()) {
+//				errorMap.put(error.getField(), error.getDefaultMessage());
+////				System.out.println("==========================");
+////				System.out.println(error.getDefaultMessage());
+////				System.out.println("==========================");
+//			}			
+//			throw new CustomValidationException("유효성 검사 실패함", errorMap);
+//		} else { // validation check 정상
 			// 스프링은 기본적으로 key-value(x-www-form-urlencoded)형식으로 데이터를 받음
 			// log.info(signupDto.toString());
 			
@@ -91,7 +92,7 @@ public class AuthController {
 			
 			// 회원가입 후 로그인 페이지로 이동
 			return "auth/signin";
-		}
+//		}
 		
 		
 	}

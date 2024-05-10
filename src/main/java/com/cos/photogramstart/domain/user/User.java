@@ -64,4 +64,15 @@ public class User {
 	public void createDate() {
 		this.createDate = LocalDateTime.now();
 	}
+
+	// system.out.print 사용 시 user를 뿌리면 무한참조로 인해 오류가 발생한다. 이는 @JsonIgnoreProperties로 해결할 수 없다.
+	// 따라서 toString을 Override해서 images를 삭제하여 해결한다.
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", website="
+				+ website + ", bio=" + bio + ", email=" + email + ", phone=" + phone + ", gender=" + gender
+				+ ", profileImageUrl=" + profileImageUrl + ", role=" + role + ", createDate=" + createDate + "]";
+	}
+	
+	
 }
