@@ -35,6 +35,9 @@
 
 <body>
 	
+	<!-- principalId 담아두는 곳. jsp 어디서나 꺼내 쓸 수 있게 된다. -->
+	<input type="hidden" id="principalId" value="${principal.user.id}"/>
+	
 	<header class="header">
 		<div class="container">
 			<a href="/" class="logo">
